@@ -8,6 +8,7 @@ PHYNBR=${DEVPATH##*/phy}
 . /lib/functions/system.sh
 
 board=$(board_name)
+label_mac=""
 
 case "$board" in
 	arcadyan,aw1000)
@@ -23,4 +24,8 @@ case "$board" in
 		[ "$PHYNBR" = "0" ] && macaddr_add $(get_mac_label) 2 > /sys${DEVPATH}/macaddress
 		[ "$PHYNBR" = "1" ] && macaddr_add $(get_mac_label) 3 > /sys${DEVPATH}/macaddress
 		;;
+        verizon,cr1000a)
+                 label_mac=$(mmc_get_mac_ascii "0:APPSBLENV" baseMAC)
+                 macaddr_add $label_mac $(($PHYNBR + 2)) > /sys${DEVPATH}/macaddress
+	  ;;
 esac
